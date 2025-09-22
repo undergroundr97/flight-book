@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  departure: 1
+  arrival: 1
+  startdatetime: 2025-09-17 15:55:11
+  flightduration: 2025-09-17 15:55:11
+
+two:
+  departure: 1
+  arrival: 1
+  startdatetime: 2025-09-17 15:55:11
+  flightduration: 2025-09-17 15:55:11
