@@ -5,6 +5,7 @@ class FlightsController < ApplicationController
   def index
     @flight = Flight.new
     query_search
+    @airport_collection = Airport.all.map { |air| [ air.code, air.id ] }
   end
 
 
@@ -69,11 +70,14 @@ class FlightsController < ApplicationController
       params.expect(flight: [ :departure, :arrival, :startdatetime, :flightduration ])
     end
   def query_search
+      flash.clear
     if params[:query].present?
-      departure_airport = Airport.find_by(code: params[:query].upcase)
-      @flights = Flight.where(departure_airport: departure_airport)
+      departure_airport = Airport.find_by(id: params[:query][:departure])
+      arrival_airport = Airport.find_by(id: params[:query][:arrival])
+      @flights = Flight.where(departure_airport: departure_airport, arrival_airport: arrival_airport)
       if @flights == []
-        @flights = Flight.all
+      flash[:notice] = "Could not find an available flight."
+      @flights = Flight.all
       end
     else
       @flights = Flight.all

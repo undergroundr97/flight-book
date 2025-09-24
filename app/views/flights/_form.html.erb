@@ -1,4 +1,9 @@
+<%= puts @airport_collection %>
+<%= puts params%>
+<%= simple_form_for :query, url: flights_path, method: :get do |f|%>
 
-<%= form_tag flights_path, method: 'GET' do%>
-<%= text_field_tag :query, params[:query], placeholder: 'Search for your flight'%>
+<%= f.input :departure, label: 'Departure Airport', collection: @airport_collection, required: false%>
+<%= f.input :arrival, label: 'Arrival Airport', collection: @airport_collection, required: false %>
+<%= f.submit %>
 <%end%>
+<%= puts params%>
