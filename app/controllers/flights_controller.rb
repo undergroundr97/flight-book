@@ -3,8 +3,10 @@ class FlightsController < ApplicationController
 
   # GET /flights or /flights.json
   def index
-    @flights = Flight.all
+    @flight = Flight.new
+    query_search
   end
+
 
   # GET /flights/1 or /flights/1.json
   def show
@@ -56,7 +58,6 @@ class FlightsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_flight
@@ -67,4 +68,15 @@ class FlightsController < ApplicationController
     def flight_params
       params.expect(flight: [ :departure, :arrival, :startdatetime, :flightduration ])
     end
+  def query_search
+    if params[:query].present?
+      departure_airport = Airport.find_by(code: params[:query].upcase)
+      @flights = Flight.where(departure_airport: departure_airport)
+      if @flights == []
+        @flights = Flight.all
+      end
+    else
+      @flights = Flight.all
+    end
+   end
 end

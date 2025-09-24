@@ -3,9 +3,10 @@
 <% content_for :title, "Flights" %>
 
 <h1>Flights</h1>
-
+<%= render 'form' %>
 <div id="flights">
   <% @flights.each do |flight| %>
+    <%= puts @flights %>
     <%= render flight %>
     <p>
       <%= link_to "Show this flight", flight %>
