@@ -6,6 +6,7 @@ class FlightsController < ApplicationController
     @flight = Flight.new
     query_search
     @airport_collection = Airport.all.map { |air| [ air.code, air.id ] }
+    @flight_dates = Flight.all.map { |flight|  flight.flightstart.to_date }
   end
 
 
@@ -67,16 +68,29 @@ class FlightsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def flight_params
-      params.expect(flight: [ :departure, :arrival, :startdatetime, :flightduration ])
+      params.expect(flight: [ :departure, :arrival, :query[:departure, :arrival, :datestart] ])
     end
   def query_search
       flash.clear
     if params[:query].present?
       departure_airport = Airport.find_by(id: params[:query][:departure])
       arrival_airport = Airport.find_by(id: params[:query][:arrival])
+      selected_date = Date.parse(params[:query][:datestart]) if params[:query][:datestart].present?
       @flights = Flight.where(departure_airport: departure_airport, arrival_airport: arrival_airport)
+      @flights = Flight.where(departure_airport: departure_airport) if params[:query][:departure].present?
+      @flights = Flight.where(arrival_airport: arrival_airport) if params[:query][:arrival].present?
+      @flights = Flight.where(flightstart: selected_date) if params[:query][:datestart].present?
+      @flights = Flight.where(departure_airport: departure_airport, arrival_airport: arrival_airport) if params[:query][:arrival].present? && params[:query][:departure].present?
+      if params[:query][:departure] == "" && params[:query][:arrival] == ""
+        if params[:query][:datestart].present?
+          @flights = Flight.where(flightstart: selected_date.all_day)
+        else
+          @flights = []
+        end
+
+      end
       if @flights == []
-      flash[:notice] = "Could not find an available flight."
+      flash[:notice] = "Could not find an available flight. #{params[:query]}"
       @flights = Flight.all
       end
     else

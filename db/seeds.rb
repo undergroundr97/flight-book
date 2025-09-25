@@ -15,13 +15,15 @@ end
 
 airport_ids = Airport.pluck(:id)
 
-10.times do
+40.times do
   departure_id, arrival_id = airport_ids.sample(2)
   departure = Airport.find(departure_id)
   arrival = Airport.find(arrival_id)
 
   Flight.find_or_create_by!(
     arrival_airport: arrival,
-    departure_airport: departure
+    departure_airport: departure,
+    flightstart: rand(1..2.days).seconds.from_now,
+    flightend: rand(3..4.days).seconds.from_now
   )
 end

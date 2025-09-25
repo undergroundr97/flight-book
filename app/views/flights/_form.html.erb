@@ -1,9 +1,9 @@
-<%= puts @airport_collection %>
-<%= puts params%>
+
 <%= simple_form_for :query, url: flights_path, method: :get do |f|%>
 
 <%= f.input :departure, label: 'Departure Airport', collection: @airport_collection, required: false%>
 <%= f.input :arrival, label: 'Arrival Airport', collection: @airport_collection, required: false %>
+<%= f.input :datestart, label: 'Pick starting date:', collection:@flight_dates.uniq %>
 <%= f.submit %>
 <%end%>
 <%= puts params%>
