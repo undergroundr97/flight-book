@@ -8,3 +8,11 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+#flights {
+    display: flex;
+    flex-direction: column;
+}
+.flight {
+    display: flex;
+    flex-direction: column;
+}

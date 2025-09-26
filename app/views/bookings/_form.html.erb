@@ -1,0 +1,17 @@
+<%= flash[:notice] = params %>
+<%= simple_form_for(@booking) do |f| %>
+
+<% selected_flight_id = params[:flight][:id]  %>
+<%= selected_flight = Flight.find_by(id: selected_flight_id)%>
+<%= selected_flight.flight_name%>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.association :booked_flight %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

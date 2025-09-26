@@ -23,6 +23,7 @@ airport_ids = Airport.pluck(:id)
   Flight.find_or_create_by!(
     arrival_airport: arrival,
     departure_airport: departure,
+    flight_name: arrival.code + ' to ' + departure.code,
     flightstart: rand(1..2.days).seconds.from_now,
     flightend: rand(3..4.days).seconds.from_now
   )

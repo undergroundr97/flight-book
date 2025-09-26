@@ -5,13 +5,10 @@
 <h1>Flights</h1>
 <%= render 'form' %>
 <div id="flights">
-  <% @flights.each do |flight| %>
-  <%= puts params%>
-    <%= render flight %>
-    <p>
-      <%= link_to "Show this flight", flight %>
-    </p>
-  <% end %>
+    <%= simple_form_for :flight, url: new_booking_path, method: :get do |f|%>
+      <%= f.collection_radio_buttons :id, @flights, :id, :flight_name%>
+      <%= f.submit%>
+    <%end%>
 </div>
 
 <%= link_to "New flight", new_flight_path %>
