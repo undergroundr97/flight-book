@@ -1,16 +1,26 @@
 <%= flash[:notice] = params %>
+
+
 <%= simple_form_for(@booking) do |f| %>
 
 <% selected_flight_id = params[:flight][:id]  %>
-<%= selected_flight = Flight.find_by(id: selected_flight_id)%>
-<%= selected_flight.flight_name%>
+<% selected_flight = Flight.find_by(id: selected_flight_id)%>
+
+  <%= "You have selected: #{selected_flight.flight_name}"%>
+  <h2>Flight Details:</h2>
+    <%= "From: #{selected_flight.departure_airport.code}"%>
+    <br>
+    <%= "To: #{selected_flight.arrival_airport.code}"%>
+    <br>
+    <%= "Flight start: #{selected_flight.flightstart.strftime("%d/%m/%Y %H:%M")}"%>
+    <br>
+    <%= "Flight end: #{selected_flight.flightend.strftime("%d/%m/%Y %H:%M")}"%>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.association :booked_flight %>
+    <%= f.hidden_field :booked_flight_id, :value => selected_flight_id %>
   </div>
-
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
