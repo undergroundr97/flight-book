@@ -17,7 +17,10 @@
     <%= "Flight end: #{selected_flight.flightend.strftime("%d/%m/%Y %H:%M")}"%>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
+    <%= f.simple_fields_for @passenger do |p|%>
+      <%=p.input :name, label: 'Passenger Name: '%>
+      <%=p.input :email, label: 'Passenger Email: '%>
+    <%end%>
   <div class="form-inputs">
     <%= f.hidden_field :booked_flight_id, :value => selected_flight_id %>
   </div>

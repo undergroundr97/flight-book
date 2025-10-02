@@ -15,6 +15,7 @@ class BookingsController < ApplicationController
   def new
     flash[:notice] = params
     @booking = Booking.new
+    @passenger = Passenger.new
   end
 
   # GET /bookings/1/edit
@@ -24,11 +25,14 @@ class BookingsController < ApplicationController
   # POST /bookings or /bookings.json
   def create
     flash[:notice] = params
-    @booking = Booking.new(booking_params)
-
+    @booking = Booking.new(booked_flight_id: params[:booking][:booked_flight_id])
+    puts "this is myparams: #{params}"
+    @passenger = Passenger.new(name: params[:booking][:passenger][:name], email: params[:booking][:passenger][:email])
+    p @passenger
+    @booking.passenger_who_booked = @passenger
     respond_to do |format|
       if @booking.save
-        format.html { redirect_to bookings_path, notice: "Booking was successfully created." }
+        format.html { redirect_to @booking, notice: "Booking was successfully created." }
         format.json { render :show, status: :created, location: @booking }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -68,6 +72,6 @@ class BookingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def booking_params
-      params.expect(booking: [ :booked_flight_id ])
+      params.expect(booking: [ :booked_flight_id, passenger: [ :name, :email ] ])
     end
 end

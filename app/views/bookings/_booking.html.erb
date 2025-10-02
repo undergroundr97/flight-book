@@ -3,5 +3,9 @@
     <strong>Booked flight:</strong>
     <%= booking.booked_flight_id %>
   </p>
-
+    <div>
+      <%= booking.passenger_who_booked&.name %>
+       
+      <%= booking.passenger_who_booked&.email%>
+    </div>
 </div>
